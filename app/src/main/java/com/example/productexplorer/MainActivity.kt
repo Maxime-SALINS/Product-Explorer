@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,9 +69,18 @@ fun ProductHeader(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Text(text = title)
-        Text(text = brand)
-        Text(text = category)
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineLarge
+        )
+        Text(
+            text = brand,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            text = category,
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
 
