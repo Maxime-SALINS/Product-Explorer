@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -67,13 +68,6 @@ fun ProductDetailScreen(
             brand = product.brand,
             category = product.category
         )
-        ProductAvailabilityCard(
-            stock = product.stock,
-            shippingInformation = product.shippingInformation,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-        )
         ProductPriceCard(
             price = product.price,
             discountPercentage = product.discountPercentage,
@@ -85,13 +79,29 @@ fun ProductDetailScreen(
             rating = product.rating,
             modifier = Modifier.padding(top = 16.dp)
         )
+        ProductAvailabilityCard(
+            stock = product.stock,
+            shippingInformation = product.shippingInformation,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        )
         ProductDescription(
             description = product.description,
             modifier = Modifier.padding(top = 16.dp)
         )
-        Button(onClick = onAddToCartClick) {
-            Text(text = "Ajouter au panier")
-        }
+        ProductWarrantyField(
+            warrantyInformation = product.warrantyInformation,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        )
+        AddToCartButton(
+            onClick = onAddToCartClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        )
     }
 }
 
@@ -213,12 +223,52 @@ fun ProductDescription(
     }
 }
 
+@Composable
+fun ProductWarrantyField(
+    warrantyInformation: String,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = warrantyInformation,
+        onValueChange = {},
+        readOnly = true,
+        label = {
+            Text(text = "Garantie")
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+fun AddToCartButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Text(text = "Ajouter au panier")
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ProductDetailScreenPreview() {
     ProductExplorerTheme {
         ProductDetailScreen(
             product = sampleProduct(),
+            onAddToCartClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProductDetailScreenOutOfStockPreview() {
+    ProductExplorerTheme {
+        ProductDetailScreen(
+            product = sampleProductOutOfStock(),
             onAddToCartClick = {}
         )
     }
@@ -248,5 +298,20 @@ fun sampleProduct(): ProductUi {
         stock = 34,
         warrantyInformation = "Garantie constructeur : 2 ans",
         shippingInformation = "Livraison estimée : 3 à 5 jours ouvrés"
+    )
+}
+fun sampleProductOutOfStock(): ProductUi {
+    return ProductUi(
+        title = "Casque Audio Pulse",
+        brand = "SoundPeak",
+        category = "Audio",
+        description = "Un casque confortable conçu pour écouter de la musique, " +
+                "suivre des cours en ligne et travailler dans de bonnes conditions.",
+        price = 129.99,
+        discountPercentage = 8.0,
+        rating = 4.2,
+        stock = 0,
+        warrantyInformation = "Garantie constructeur : 1 an",
+        shippingInformation = "Produit temporairement indisponible"
     )
 }
